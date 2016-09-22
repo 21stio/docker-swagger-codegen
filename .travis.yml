@@ -1,0 +1,12 @@
+sudo: required
+language: generic
+
+services:
+- docker
+- docker-compose
+
+script:
+  - docker-compose run base-application help
+  - docker build --tag ${REGISTRY_USERNAME}/swagger-codegen --tag ${REGISTRY_USERNAME}/swagger-codegen:latest --tag ${REGISTRY_USERNAME}/swagger-codegen:$(date "+%d-%m-%Y_%H-%M-%S") .
+  - docker login --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}
+  - docker push ${REGISTRY_USERNAME}/swagger-codegen
